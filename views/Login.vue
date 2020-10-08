@@ -1,7 +1,8 @@
 <template>
   <view >
+  
     <scroll-view >
-      <image
+      <image 
         :style="{width: width, height: height}"
         :source="{uri: 'https://c8.alamy.com/comp/2BPEMM2/portrait-of-a-happy-woman-standing-with-laptop-over-turquoise-background-2BPEMM2.jpg'}"
       />
@@ -14,20 +15,19 @@
         <view class="bottom-sec">
           <!-- <form> -->
           <view class="sub-con">
-            <text-input class="input" placeholder="Username" />
-            <text-input class="input" placeholder="Password" />
+            <text-input class="input" v-model="username" placeholder="Username" />
+            <text-input class="input" v-model="password" placeholder="Password" />
             <CheckBox value="true" />
             <touchable-opacity class="forgot-p">
               <text class="forgot-text">Forgot Password</text>
             </touchable-opacity>
-            <touchable-opacity class="btn">
+            <touchable-opacity class="btn" :on-press="signin">
               <text class="btn-text">Login</text>
             </touchable-opacity>
 
             <view class="flexy">
               <text>Don't have an account?</text>
-
-              <touchable-opacity class>
+              <touchable-opacity :on-press="goToSignUp">
                 <text class="signup">Sign Up</text>
               </touchable-opacity>
             </view>
@@ -44,6 +44,8 @@ import { Dimensions } from "react-native";
 import { CheckBox } from "react-native";
 import NavigationBar from "react-native-navbar";
 
+import axios from "axios";
+
 export default {
     props: {
     navigation: {
@@ -56,8 +58,25 @@ export default {
       width: Math.round(Dimensions.get("window").width),
       height: Math.round(Dimensions.get("window").height),
       half: Math.round(Dimensions.get("window").height) / 2,
+      username: "",
+      password: ""
     };
   },
+
+  methods: {
+    goToSignUp() {
+      this.navigation.navigate("RegisterPage");
+    },
+
+    signin() {
+      var url = "/api/account/signin";
+      axios.post(url, { username: this.username, password: this.password })
+        .then(res => {
+          this.navigation.navigate("HomePage")
+        })
+        .catch(err => alert(err));
+    }
+  }
   
 };
 </script>
