@@ -51,7 +51,6 @@ export default {
   /* align-items: center;
   justify-content: center;
   flex: 1; */
-
 }
 .text-color-primary {
   color: blue;
